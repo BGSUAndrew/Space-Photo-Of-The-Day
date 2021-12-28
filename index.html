@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Photo of the Day!</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+        <h1 class="centered">NASA Photo of the Day</h1>
+        <section v-if="errored">
+            <p>Oops! Something has gone wrong. Might be an issue with the API. Might be something I did. </p>
+        </section>
+        <section>
+
+            <div class="information">
+              <h2 class="centered">{{ info.title }}</h2>
+              <p class="centered">{{ info.date }}</p>
+            <a href="info.url" target="_window">
+            <img :src="info.url" class="img-fluid" />
+          </a>
+            <p>{{ info.explanation }}</p>
+
+            </div>
+            <hr>
+        <p>This very tiny site was made by Andrew O'Connor. Hi! I'm trying to build and deploy more sites for fun, and this is one of them. This site uses the <a href="https://api.nasa.gov/" target="_blank">NASA API</a> so shout out to them!</p>
+          </section>
+      </div>
+</body>
+<script>
+new Vue({
+  el: '#app',
+  data () {
+    return {
+    info: null,
+    loading: true,
+    errored: false,
+    }
+  },
+  mounted () {
+    axios
+      .get('https://api.nasa.gov/planetary/apod?api_key=9bC0FNmoSDYgi6Y0gBT2ssRlh0iTrK0fm56ViGst')
+      .then(response => (this.info = response.data))
+      .catch(error => console.log(error))
+  },
+})
+</script>
+<style>
+  html {
+    background-image: linear-gradient(#000000, #0A0C2B);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+}
+
+p {
+    color:#fff;
+    text-align: left;
+}
+
+a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.centered {
+    color: #fff;
+    text-align: center;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+#app {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+@media only screen and (max-width: 1000px) {
+  body {
+    grid-template-columns: 5% 90% 5%;
+  }
+}
+
+</style>
+</html>
